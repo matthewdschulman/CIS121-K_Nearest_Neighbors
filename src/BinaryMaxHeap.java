@@ -17,6 +17,7 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
 	public BinaryMaxHeap(Class<E> type) { 
 		this.type = type;
 		arr = (E[]) Array.newInstance(type, 127);
+		System.out.println(arr.length);
 	}
 
 	@Override
@@ -24,7 +25,11 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
 	 * @return true if this heap is empty.
 	 */
 	public boolean isEmpty() {
-		// TODO: implement
+		//assume that arr[0] is always null like in lab, and that the heap always
+		//starts at arr[1]
+		if (arr[1] == null) {
+			return true;
+		}
 		return false;
 	}
 
