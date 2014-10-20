@@ -12,12 +12,13 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
 		implements BinaryMaxHeapI<E>{
 	E[] arr; // SUPER IMPORTANT: do NOT change this to private! Leave as package-private
 	Class<E> type;
+	int size;
 	
 	@SuppressWarnings("unchecked")
 	public BinaryMaxHeap(Class<E> type) { 
 		this.type = type;
 		arr = (E[]) Array.newInstance(type, 127);
-		System.out.println(arr.length);
+		size = 0;
 	}
 
 	@Override
@@ -51,8 +52,12 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
      * @throws NoSuchElementException If the heap is empty.
      */
      public E max() throws NoSuchElementException {
-     	// TODO: implement
-     	return null;
+     	try {
+     		return arr[1];
+     	} catch (NoSuchElementException exception) {
+     		exception.printStackTrace();
+     		return null;
+     	}		
      }
 
 	@Override
@@ -62,7 +67,23 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
      * @throws NullPointerException if e is null.
      */
 	public void insert(E e) {
-		// TODO: implement
+		if (arr[1] == null) {
+			//then heap is empty
+			arr[1] = e;
+			size++;
+		} else {
+			arr[size + 1] = e;			
+			int curIndexToConsiderASwitchTo = (size + 1) / 2;
+			int curIndexToConsiderASwitchFrom = size + 1;
+			while ((curIndexToConsiderASwitchTo > 0) && (Double.parseDouble(e.toString()) > Double.parseDouble(arr[curIndexToConsiderASwitchTo].toString()))) {
+				E switching = arr[curIndexToConsiderASwitchTo];
+				arr[curIndexToConsiderASwitchTo] = e;
+				arr[curIndexToConsiderASwitchFrom] = switching;
+				curIndexToConsiderASwitchFrom =  curIndexToConsiderASwitchTo;
+				curIndexToConsiderASwitchTo = curIndexToConsiderASwitchTo / 2;
+			}
+			size ++;
+		}
 	}
 
 	@Override
@@ -71,8 +92,7 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
      *		in it.
      */
 	public int size() {
-		// TODO: implement
-		return -1;
+		return size;
 	}
 
 	@Override
@@ -82,7 +102,6 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
      * @return arr
      */
     public E[] getUnderlyingArray() {
-    	// TODO: implement
-    	return null;
+    	return arr;
     }
 }
