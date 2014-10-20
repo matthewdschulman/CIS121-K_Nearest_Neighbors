@@ -53,12 +53,11 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
      * @throws NoSuchElementException If the heap is empty.
      */
      public E max() throws NoSuchElementException {
-     	try {
-     		return arr[1];
-     	} catch (NoSuchElementException exception) {
-     		exception.printStackTrace();
-     		return null;
-     	}		
+		if (arr[1] == null) {
+			throw new NoSuchElementException();
+		} else {
+			return arr[1];
+		}
      }
 
 	@Override

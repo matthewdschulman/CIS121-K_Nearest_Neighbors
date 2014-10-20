@@ -61,6 +61,20 @@ public class BinaryMaxHeapTest {
 		assertEquals((Integer)1, heap.getUnderlyingArray()[4]);
 		assertEquals((Integer)4, heap.getUnderlyingArray()[5]);	
 	}	
+	
+	@Test
+	public void testInsertWithSameElement() {
+		heap.insert(5);		
+		heap.insert(4);
+		heap.insert(6);
+		heap.insert(6);
+		assertEquals(4, heap.size());
+		//printArr(heap.getUnderlyingArray());
+		assertEquals((Integer)6, heap.getUnderlyingArray()[1]);
+		assertEquals((Integer)6, heap.getUnderlyingArray()[2]);
+		assertEquals((Integer)5, heap.getUnderlyingArray()[3]);		
+		assertEquals((Integer)4, heap.getUnderlyingArray()[4]);
+	}
 
 	@Test
 	public void testMax() {
