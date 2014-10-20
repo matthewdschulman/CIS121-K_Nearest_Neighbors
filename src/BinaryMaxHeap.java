@@ -1,5 +1,6 @@
 
 import java.lang.reflect.Array;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -67,23 +68,31 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
      * @throws NullPointerException if e is null.
      */
 	public void insert(E e) {
-		if (arr[1] == null) {
-			//then heap is empty
-			arr[1] = e;
-			size++;
-		} else {
-			arr[size + 1] = e;			
-			int curIndexToConsiderASwitchTo = (size + 1) / 2;
-			int curIndexToConsiderASwitchFrom = size + 1;
-			while ((curIndexToConsiderASwitchTo > 0) && (Double.parseDouble(e.toString()) > Double.parseDouble(arr[curIndexToConsiderASwitchTo].toString()))) {
-				E switching = arr[curIndexToConsiderASwitchTo];
-				arr[curIndexToConsiderASwitchTo] = e;
-				arr[curIndexToConsiderASwitchFrom] = switching;
-				curIndexToConsiderASwitchFrom =  curIndexToConsiderASwitchTo;
-				curIndexToConsiderASwitchTo = curIndexToConsiderASwitchTo / 2;
-			}
-			size ++;
+		if (arr.length == (size + 1)) {
+			//double the length of the array
+			resizeArr(arr.length * 2);
 		}
+		arr[size + 1] = e;			
+		int curIndexToConsiderASwitchTo = (size + 1) / 2;
+		int curIndexToConsiderASwitchFrom = size + 1;
+		while ((curIndexToConsiderASwitchTo > 0) && (Double.parseDouble(e.toString()) > Double.parseDouble(arr[curIndexToConsiderASwitchTo].toString()))) {
+			E switching = arr[curIndexToConsiderASwitchTo];
+			arr[curIndexToConsiderASwitchTo] = e;
+			arr[curIndexToConsiderASwitchFrom] = switching;
+			curIndexToConsiderASwitchFrom =  curIndexToConsiderASwitchTo;
+			curIndexToConsiderASwitchTo = curIndexToConsiderASwitchTo / 2;
+		}
+		size ++;
+	}
+
+	private void resizeArr(int newSize) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		E[] newElementsArr = (E[]) Array.newInstance(type, newSize);
+		for (int i = 1; i <= size; i++) {
+			newElementsArr[i] = arr[i];
+		}
+		arr = newElementsArr;    	
 	}
 
 	@Override
