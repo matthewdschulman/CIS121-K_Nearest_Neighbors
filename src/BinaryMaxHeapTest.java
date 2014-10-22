@@ -137,5 +137,20 @@ public class BinaryMaxHeapTest {
 		assertEquals(127, heapInt.getUnderlyingArray().length);
 		assertNotNull(heapInt.getUnderlyingArray()[62]);
 	}
+	
+	@Test
+	public void testAnotherTypeOfComparable() {
+		BinaryMaxHeap<String> heapString = new BinaryMaxHeap<String>(String.class);
+		heapString.insert("bob");
+		heapString.insert("hello");
+		heapString.insert("an");
+		assertEquals(3, heapString.size());
+		assertEquals((String)"hello", heapString.getUnderlyingArray()[1]);
+		assertEquals((String)"bob", heapString.getUnderlyingArray()[2]);
+		assertEquals((String)"an", heapString.getUnderlyingArray()[3]);
+		heapString.removeMax();
+		assertEquals((String)"bob", heapString.getUnderlyingArray()[1]);
+		assertEquals((String)"an", heapString.getUnderlyingArray()[2]);
+	}
 
 }
