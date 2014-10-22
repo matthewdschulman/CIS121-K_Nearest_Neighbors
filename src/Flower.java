@@ -1,3 +1,9 @@
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.junit.Before;
 
 /**
@@ -47,6 +53,7 @@ public class Flower implements Comparable<Flower> {
 		}
 		Flower[] normalizedFlowers = getNormalizedFlowers(training);
 		BinaryMaxHeap<Flower> heapOfCloseness = new BinaryMaxHeap<Flower>(Flower.class);
+		this.neighbor = this;
 		for (int i = 0; i < normalizedFlowers.length; i++) { 
 			heapOfCloseness.insert(normalizedFlowers[i]);			
 		}
@@ -115,8 +122,31 @@ public class Flower implements Comparable<Flower> {
 	 * @throws IllegalArgumentException if neighbors is null/empty.
 	 */
 	public static String predict(Flower[] neighbors) {
-		// TODO: unimplemented
-		return null;
+		if (neighbors == null || neighbors[0] == null) {
+			throw new IllegalArgumentException();
+		}
+		HashMap<String, Integer> speciesCount = new HashMap<String, Integer>();
+		for (int i = 0; i < neighbors.length; i++) {
+			if (speciesCount.containsKey(neighbors[i].speciesName)) {
+				speciesCount.put(neighbors[i].speciesName, speciesCount.get(neighbors[i].speciesName) + 1);
+			} else {
+				speciesCount.put(neighbors[i].speciesName, 1);
+			}
+		}
+		//find most frequent species
+		String mostLikelySpecies = "";
+		int highestCount = 0;
+		Iterator iter = speciesCount.entrySet().iterator();
+	    while (iter.hasNext()) {
+	        @SuppressWarnings("unchecked")
+			Map.Entry<String, Integer> pairs = (Entry<String, Integer>) iter.next();
+	        if (pairs.getValue() > highestCount) {
+	        	mostLikelySpecies = pairs.getKey();
+	        	highestCount = pairs.getValue();
+	        }
+	        iter.remove(); // avoids a ConcurrentModificationException
+	    }
+		return mostLikelySpecies;
 	}
 
 	/**
@@ -141,9 +171,9 @@ public class Flower implements Comparable<Flower> {
 			throw new IllegalStateException("this.neighbor is null");
 		}
 		if ((this.computeEuclidean(this.neighbor) - g.computeEuclidean(this.neighbor) > 0)) {
-			return 1;
-		} else {
 			return -1;
+		} else {
+			return 1;
 		}
 	}
 

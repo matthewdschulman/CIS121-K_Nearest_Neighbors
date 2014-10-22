@@ -41,7 +41,7 @@ public class FlowerTest {
 	@Test
 	public void testCompareTo() {
 		firstFlower.updateNeighbor(outputArr[2]);
-		assertEquals(1, firstFlower.compareTo(outputArr[1]));
+		assertEquals(-1, firstFlower.compareTo(outputArr[1]));
 	}
 	
 	@Test
@@ -55,5 +55,15 @@ public class FlowerTest {
 	public void testCompareToWithValidGButNoNeighbore() {
 		exception.expect(IllegalStateException.class);
 		assertEquals(1, firstFlower.compareTo(outputArr[1]));
+	}
+	
+	@Test
+	public void testPredictNormalCaseWithOneLeader() {
+		Flower[] newArr = new Flower[4];
+		newArr[0] = outputArr[0];
+		for (int i = 1; i < 4; i++) {
+			newArr[i] = outputArr[i*30];
+		}
+		assertEquals("Iris-setosa", Flower.predict(newArr));
 	}
 }
