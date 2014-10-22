@@ -1,3 +1,5 @@
+import org.junit.Before;
+
 /**
  * A class to represent a Flower, and various methods on it.
  * @author Max Scheiber (scheiber), 14fa
@@ -40,10 +42,69 @@ public class Flower implements Comparable<Flower> {
 	 * 		k is not positive.
 	 */
 	public Flower[] kNN(Flower[] training, int k) {
-		// TODO: unimplemented
-		return null;
+		if (training == null || training[0] == null || k < 1) {
+			throw new IllegalArgumentException();
+		}
+		Flower[] normalizedFlowers = getNormalizedFlowers(training);
+		BinaryMaxHeap<Flower> heapOfCloseness = new BinaryMaxHeap<Flower>(Flower.class);
+		for (int i = 0; i < normalizedFlowers.length; i++) { 
+			heapOfCloseness.insert(normalizedFlowers[i]);			
+		}
+		Flower[] kClosest = new Flower[Math.min(k, heapOfCloseness.size())];
+		for (int i = 0; i < k; i++) {
+			kClosest[i] = heapOfCloseness.removeMax();
+		}
+		return kClosest;
 	}
 	
+	private Flower[] getNormalizedFlowers(Flower[] training) {
+		double feature0Min = Double.POSITIVE_INFINITY;
+		double feature0Max = Double.NEGATIVE_INFINITY;
+		double feature1Min = Double.POSITIVE_INFINITY;
+		double feature1Max = Double.NEGATIVE_INFINITY;
+		double feature2Min = Double.POSITIVE_INFINITY;
+		double feature2Max = Double.NEGATIVE_INFINITY;
+		double feature3Min = Double.POSITIVE_INFINITY;
+		double feature3Max = Double.NEGATIVE_INFINITY;
+		for (int i = 0; i < training.length; i++) {
+			double[] features = training[i].getFeatures();
+			if (features[0] < feature0Min) {
+				feature0Min = features[0];
+			}
+			if (features[0] > feature0Max) {
+				feature0Max = features[0];
+			}
+			if (features[1] < feature1Min) {
+				feature1Min = features[1];
+			}
+			if (features[1] > feature1Max) {
+				feature1Max = features[1];
+			}
+			if (features[2] < feature2Min) {
+				feature2Min = features[2];
+			}
+			if (features[2] > feature2Max) {
+				feature2Max = features[2];
+			}
+			if (features[3] < feature3Min) {
+				feature3Min = features[3];
+			}
+			if (features[3] > feature3Max) {
+				feature3Max = features[3];
+			}
+		}
+		Flower[] normalizedFlowers = new Flower[training.length];
+		for (int i = 0; i < training.length; i++) {
+			double[] oldFeatures = training[i].getFeatures();
+			double newf0 = ((oldFeatures[0] - feature0Min)/(feature0Max - feature0Min));
+			double newf1 = ((oldFeatures[1] - feature1Min)/(feature1Max - feature1Min));
+			double newf2 = ((oldFeatures[2] - feature2Min)/(feature2Max - feature2Min));
+			double newf3 = ((oldFeatures[3] - feature3Min)/(feature3Max - feature3Min));
+			normalizedFlowers[i] = new Flower(newf0, newf1, newf2, newf3, training[i].speciesName);
+		}
+		return normalizedFlowers;
+	}
+
 	public void updateNeighbor(Flower newNeighbor) {
 		this.neighbor = newNeighbor;
 	}
