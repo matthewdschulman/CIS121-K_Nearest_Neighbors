@@ -1,7 +1,11 @@
 import static org.junit.Assert.*;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 
 public class BinaryMaxHeapTest {
@@ -13,6 +17,9 @@ public class BinaryMaxHeapTest {
     {
 		heapInt = new BinaryMaxHeap<Integer>(Integer.class);
     }
+	
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
 	
 	@SuppressWarnings("unused")
 	private void printArr(Integer[] underlyingArray) {
@@ -103,8 +110,15 @@ public class BinaryMaxHeapTest {
 	}
 	
 	@Test
-	public void testExceptions() {
-		
+	public void testRemoveMaxException() {		
+		exception.expect(NoSuchElementException.class);
+		heapInt.removeMax();
+	}
+	
+	@Test
+	public void testMaxException() {		
+		exception.expect(NoSuchElementException.class);
+		heapInt.max();
 	}
 	
 	@Test
