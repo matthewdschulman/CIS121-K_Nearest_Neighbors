@@ -49,11 +49,19 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
 			resizeArr(arr.length / 2);
 		}
 		E maxToReturn = this.max();
-		arr[1] = arr[size];
+		E minBroughtToTop = arr[size];
+		arr[1] = minBroughtToTop;
+		arr[size] = null;
+		size--;
 		int curIndexToConsiderASwitchTo = 2;
 		int curIndexToConsiderASwitchFrom = 1;
-		//DO THIS
-		size--;
+		while (curIndexToConsiderASwitchTo <= size && minBroughtToTop.compareTo(arr[curIndexToConsiderASwitchTo]) < 0) {
+			E switching = arr[curIndexToConsiderASwitchTo];
+			arr[curIndexToConsiderASwitchTo] = minBroughtToTop;
+			arr[curIndexToConsiderASwitchFrom] = switching;
+			curIndexToConsiderASwitchFrom = curIndexToConsiderASwitchTo;
+			curIndexToConsiderASwitchTo = curIndexToConsiderASwitchTo * 2;
+		}
 		return maxToReturn;
 	}
 
