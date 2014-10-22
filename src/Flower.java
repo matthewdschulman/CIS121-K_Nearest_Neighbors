@@ -74,7 +74,15 @@ public class Flower implements Comparable<Flower> {
 	 * @throws IllegalArgumentException is g is null.
 	 */
 	double computeEuclidean(Flower g) {
-		// TODO: unimplemented
-		return -1;
+		if (g == null) {
+			throw new IllegalArgumentException();
+		}
+		double[] fFeatures = this.getFeatures();
+		double[] gFeatures = g.getFeatures();
+		
+		return (Math.sqrt(Math.pow(fFeatures[0] - gFeatures[0], 2) + 
+				Math.pow(fFeatures[1] - gFeatures[1], 2) + 
+				Math.pow(fFeatures[2] - gFeatures[2], 2) + 
+				Math.pow(fFeatures[3] - gFeatures[3], 2)));
 	}
 }
