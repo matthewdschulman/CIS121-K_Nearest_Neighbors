@@ -88,7 +88,6 @@ public class BinaryMaxHeapTest {
 	public void testMax() {
 		heapInt.insert(5);
 		assertEquals((Integer) 5, heapInt.max());
-		System.out.println(1/2);
 	}
 	
 	@Test
@@ -123,7 +122,20 @@ public class BinaryMaxHeapTest {
 	
 	@Test
 	public void testResizing() {
-		
+		for (int i = 0; i < 126; i++) {
+			heapInt.insert(i);
+		}
+		assertEquals(127, heapInt.getUnderlyingArray().length);
+		heapInt.insert(10);
+		assertEquals(254, heapInt.getUnderlyingArray().length);
+		assertNotNull(heapInt.getUnderlyingArray()[127]);
+		assertNull(heapInt.getUnderlyingArray()[128]);
+		while (heapInt.size * 4 > heapInt.getUnderlyingArray().length) {
+			heapInt.removeMax();
+		}
+		heapInt.removeMax();
+		assertEquals(127, heapInt.getUnderlyingArray().length);
+		assertNotNull(heapInt.getUnderlyingArray()[62]);
 	}
 
 }

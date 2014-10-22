@@ -45,6 +45,7 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
+		
 		if (arr.length >= size * 4) {
 			resizeArr(arr.length / 2);
 		}
@@ -110,7 +111,7 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
 		for (int i = 1; i <= size; i++) {
 			newElementsArr[i] = arr[i];
 		}
-		arr = newElementsArr;    	
+		arr = newElementsArr;    
 	}
 
 	@Override
