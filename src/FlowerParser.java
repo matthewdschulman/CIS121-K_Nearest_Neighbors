@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,12 +18,17 @@ public class FlowerParser {
 	 * @throws IllegalArgumentException if the file is malformed
 	 */
 	public static Flower[] parse(String filename) {
+		File file = new File("./src/" + filename);
+		if (!file.exists()) {
+			throw new IllegalArgumentException();
+		}
+		
 		BufferedReader br = null;
 		ArrayList<Flower> flowerArrList = new ArrayList<Flower>();
 	
 	    try{	       
 	       // create new buffered reader
-	       br = new BufferedReader(new FileReader("./src/" + filename));
+	       br = new BufferedReader(new FileReader(file));
 	      
 	       while (br.ready()) {
 	    	   String curLine = br.readLine();
