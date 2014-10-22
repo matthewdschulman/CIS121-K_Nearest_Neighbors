@@ -5,6 +5,7 @@
 public class Flower implements Comparable<Flower> {
 	private double[] thisFeatures;
 	private String speciesName;
+	private Flower neighbor;
 	/**
 	 * @param label The flower's species.
 	 * @throws IllegalArgumentException is label is null.
@@ -42,6 +43,10 @@ public class Flower implements Comparable<Flower> {
 		// TODO: unimplemented
 		return null;
 	}
+	
+	public void updateNeighbor(Flower newNeighbor) {
+		this.neighbor = newNeighbor;
+	}
 
 	/**
 	 * @return the majority label of the inputted labels. If there is a tie,
@@ -64,9 +69,21 @@ public class Flower implements Comparable<Flower> {
 	/**
 	 * Should compare the distance between this and the test point to g and the test point.
 	 */
+	//returns 1 is (f -> neighbor distance) > (g -> neighbor distance) and -1 if "" < ""
+	//throws IllegalArgumentException if g is null
+	//throws IllegalStateException if this.neighbor is null
 	public int compareTo(Flower g) {
-		// TODO: unimplemented
-		return -1;
+		if (g == null) {
+			throw new IllegalArgumentException();
+		}
+		if (this.neighbor == null) {
+			throw new IllegalStateException("this.neighbor is null");
+		}
+		if ((this.computeEuclidean(this.neighbor) - g.computeEuclidean(this.neighbor) > 0)) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 
 	/**

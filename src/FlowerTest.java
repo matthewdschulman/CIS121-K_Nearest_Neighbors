@@ -40,6 +40,20 @@ public class FlowerTest {
 	
 	@Test
 	public void testCompareTo() {
-		//assertEquals(-1, firstFlower.compareTo(outputArr[2]));
+		firstFlower.updateNeighbor(outputArr[2]);
+		assertEquals(1, firstFlower.compareTo(outputArr[1]));
+	}
+	
+	@Test
+	public void testCompareToWithValidNeighborButNullG() {
+		firstFlower.updateNeighbor(outputArr[2]);
+		exception.expect(IllegalArgumentException.class);
+		assertEquals(1, firstFlower.compareTo(null));
+	}
+	
+	@Test
+	public void testCompareToWithValidGButNoNeighbore() {
+		exception.expect(IllegalStateException.class);
+		assertEquals(1, firstFlower.compareTo(outputArr[1]));
 	}
 }
