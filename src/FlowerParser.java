@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * A class for parsing input .data files into POJOs.
  * @author Max Scheiber (scheiber), 14fa
@@ -12,7 +17,41 @@ public class FlowerParser {
 	 * @throws IllegalArgumentException if the file is malformed
 	 */
 	public static Flower[] parse(String filename) {
-		// TODO: unimplemented
-		return null;
+		BufferedReader br = null;
+		ArrayList<Flower> flowerArrList = new ArrayList<Flower>();
+	
+	    try{	       
+	       // create new buffered reader
+	       br = new BufferedReader(new FileReader("./src/" + filename));
+	      
+	       while (br.ready()) {
+	    	   String curLine = br.readLine();
+	    	   String[] attributes = curLine.split("	");
+	    	   //note that i choose to 
+	    	   Flower curFlower = new Flower(Double.parseDouble(attributes[0]), 
+	    			   Double.parseDouble(attributes[1]), Double.parseDouble(attributes[2]), 
+	    			   Double.parseDouble(attributes[3]), attributes[4]);
+	    	   flowerArrList.add(curFlower);
+	       }
+	       
+	    } catch(Exception e) {
+	       e.printStackTrace();
+	       throw new IllegalArgumentException();
+	    } finally {
+	       
+	       // releases resources associated with the stream
+	      if(br!=null) {
+	          try {
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	      }
+	    }
+	    Flower[] outputArr = new Flower[flowerArrList.size()];
+	    for (int i = 0; i < outputArr.length; i++) {
+	    	outputArr[i] = flowerArrList.get(i);
+	    }
+	    return outputArr;
 	}
 }

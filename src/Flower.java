@@ -3,12 +3,22 @@
  * @author Max Scheiber (scheiber), 14fa
  */
 public class Flower implements Comparable<Flower> {
+	private double[] thisFeatures;
+	private String speciesName;
 	/**
 	 * @param label The flower's species.
 	 * @throws IllegalArgumentException is label is null.
 	 */
 	public Flower(double f0, double f1, double f2, double f3, String label) {
-		// TODO: unimplemented
+		if (label == null) {
+			throw new IllegalArgumentException();
+		}
+		thisFeatures = new double[4];
+		thisFeatures[0] = f0;
+		thisFeatures[1] = f1;
+		thisFeatures[2] = f2;
+		thisFeatures[3] = f3;
+		speciesName = label;
 	}
 
 	/**
@@ -17,7 +27,8 @@ public class Flower implements Comparable<Flower> {
 	 * @throws IllegalArgumentException if features is not length 4, or label is null.
 	 */
 	public Flower(double[] features, String label) {
-		// TODO: unimplemented
+		thisFeatures = features;
+		speciesName = label;
 	}
 
 	/**
@@ -46,8 +57,7 @@ public class Flower implements Comparable<Flower> {
 	 * @return a length-four array of features f0, f1, f2, and f3.
 	 */
 	public double[] getFeatures() {
-		// TODO: unimplemented
-		return null;
+		return thisFeatures;
 	}
 
 	@Override
