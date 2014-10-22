@@ -1,7 +1,5 @@
 import static org.junit.Assert.*;
 
-import java.util.NoSuchElementException;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -25,6 +23,7 @@ public class FlowerParserTest {
 	@Test
 	public void testFaultyFilename() {
 		exception.expect(IllegalArgumentException.class);
+		@SuppressWarnings("unused")
 		Flower[] faultyFileArr = FlowerParser.parse("iamnotafilename.data");
 	}
 
