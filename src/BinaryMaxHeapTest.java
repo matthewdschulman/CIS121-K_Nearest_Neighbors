@@ -83,5 +83,33 @@ public class BinaryMaxHeapTest {
 		assertEquals((Integer) 5, heapInt.max());
 		System.out.println(1/2);
 	}
+	
+	@Test
+	public void testRemoveMax() {
+		heapInt.insert(5);	
+		assertEquals((Integer)5, heapInt.removeMax());
+		assertEquals(0, heapInt.size());
+		heapInt.insert(5);		
+		heapInt.insert(4);
+		heapInt.insert(6);
+		heapInt.insert(1);
+		heapInt.insert(7);	
+		assertEquals((Integer)7, heapInt.removeMax());
+		assertEquals(4, heapInt.size());
+		assertEquals((Integer)6, heapInt.getUnderlyingArray()[1]);
+		assertEquals((Integer)4, heapInt.getUnderlyingArray()[2]);
+		assertEquals((Integer)5, heapInt.getUnderlyingArray()[3]);		
+		assertEquals((Integer)1, heapInt.getUnderlyingArray()[4]);
+	}
+	
+	@Test
+	public void testExceptions() {
+		
+	}
+	
+	@Test
+	public void testResizing() {
+		
+	}
 
 }

@@ -42,6 +42,9 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
      * @throws NoSuchElementException If the heap is empty.
      */
 	public E removeMax() throws NoSuchElementException {
+		if (size == 0) {
+			throw new NoSuchElementException();
+		}
 		if (arr.length >= size * 4) {
 			resizeArr(arr.length / 2);
 		}
@@ -82,7 +85,7 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
 		arr[size + 1] = e;			
 		int curIndexToConsiderASwitchTo = (size + 1) / 2;
 		int curIndexToConsiderASwitchFrom = size + 1;
-		while ((curIndexToConsiderASwitchTo > 0) && e.compareTo(arr[curIndexToConsiderASwitchTo]) > 0) {//(Double.parseDouble(e.toString()) > Double.parseDouble(arr[curIndexToConsiderASwitchTo].toString()))) {
+		while ((curIndexToConsiderASwitchTo > 0) && e.compareTo(arr[curIndexToConsiderASwitchTo]) > 0) {
 			E switching = arr[curIndexToConsiderASwitchTo];
 			arr[curIndexToConsiderASwitchTo] = e;
 			arr[curIndexToConsiderASwitchFrom] = switching;
