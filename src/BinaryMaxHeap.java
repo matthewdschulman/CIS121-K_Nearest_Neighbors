@@ -87,6 +87,9 @@ public class BinaryMaxHeap<E extends Comparable<? super E>>
      * @throws NullPointerException if e is null.
      */
 	public void insert(E e) {
+		if (e == null) {
+			throw new NullPointerException();
+		}
 		if (arr.length == (size + 1)) {
 			//double the length of the array
 			resizeArr(arr.length * 2);

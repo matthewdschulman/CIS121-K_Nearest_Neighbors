@@ -13,7 +13,7 @@ import org.junit.Before;
 public class Flower implements Comparable<Flower> {
 	private double[] thisFeatures;
 	private String speciesName;
-	private Flower neighbor;
+	private Flower testFlower;
 	/**
 	 * @param label The flower's species.
 	 * @throws IllegalArgumentException is label is null.
@@ -28,6 +28,7 @@ public class Flower implements Comparable<Flower> {
 		thisFeatures[2] = f2;
 		thisFeatures[3] = f3;
 		speciesName = label;
+		this.testFlower = this;
 	}
 
 	/**
@@ -38,6 +39,7 @@ public class Flower implements Comparable<Flower> {
 	public Flower(double[] features, String label) {
 		thisFeatures = features;
 		speciesName = label;
+		this.testFlower = this;
 	}
 
 	/**
@@ -51,19 +53,43 @@ public class Flower implements Comparable<Flower> {
 		if (training == null || training[0] == null || k < 1) {
 			throw new IllegalArgumentException();
 		}
-		Flower[] normalizedFlowers = getNormalizedFlowers(training);
+		Flower[] toNormalize = new Flower[training.length + 1];
+		for (int i = 0; i < toNormalize.length - 1; i++) {
+			toNormalize[i] = training[i];
+		}
+		//the test element aka "this" is the last element in the array so we can
+		//normalize everything
+		toNormalize[toNormalize.length - 1] = this;
+		Flower[] normalizedFlowers = getNormalizedFlowers(toNormalize);
+		Flower toTest = normalizedFlowers[normalizedFlowers.length-1];
+		//get rid of "test" element from normalized array
+		normalizedFlowers[normalizedFlowers.length-1] = null;
 		BinaryMaxHeap<Flower> heapOfCloseness = new BinaryMaxHeap<Flower>(Flower.class);
-		this.neighbor = this;
 		for (int i = 0; i < normalizedFlowers.length; i++) { 
-			heapOfCloseness.insert(normalizedFlowers[i]);			
+			if (normalizedFlowers[i] != null) {
+				normalizedFlowers[i].updateThisTest(toTest);
+				heapOfCloseness.insert(normalizedFlowers[i]);		
+			}
 		}
 		Flower[] kClosest = new Flower[Math.min(k, heapOfCloseness.size())];
 		for (int i = 0; i < k; i++) {
 			kClosest[i] = heapOfCloseness.removeMax();
-		}
+		}		
 		return kClosest;
+	}	
+	
+	void updateThisTest(Flower flower) {
+		this.testFlower = flower;		
 	}
 	
+	void updateThisSpecies(String newName) {
+		this.speciesName = newName;
+	}
+	
+	Flower getThisTest(Flower flower) {
+		return testFlower;
+	}
+
 	private Flower[] getNormalizedFlowers(Flower[] training) {
 		double feature0Min = Double.POSITIVE_INFINITY;
 		double feature0Max = Double.NEGATIVE_INFINITY;
@@ -109,11 +135,11 @@ public class Flower implements Comparable<Flower> {
 			double newf3 = ((oldFeatures[3] - feature3Min)/(feature3Max - feature3Min));
 			normalizedFlowers[i] = new Flower(newf0, newf1, newf2, newf3, training[i].speciesName);
 		}
+		for (int i = 0; i < normalizedFlowers.length; i++) {
+			double[] curF = normalizedFlowers[i].getFeatures();
+//			System.out.println(curF[0] + " " + curF[1] + " " + curF[2] + " " + curF[3] + " " + normalizedFlowers[i].getSpeciesName());
+		}
 		return normalizedFlowers;
-	}
-
-	public void updateNeighbor(Flower newNeighbor) {
-		this.neighbor = newNeighbor;
 	}
 
 	/**
@@ -155,7 +181,12 @@ public class Flower implements Comparable<Flower> {
 	public double[] getFeatures() {
 		return thisFeatures;
 	}
+	
+	public String getSpeciesName() {
+		return speciesName;
+	}
 
+	@SuppressWarnings("unused")
 	@Override
 	/**
 	 * Should compare the distance between this and the test point to g and the test point.
@@ -167,10 +198,10 @@ public class Flower implements Comparable<Flower> {
 		if (g == null) {
 			throw new IllegalArgumentException();
 		}
-		if (this.neighbor == null) {
-			throw new IllegalStateException("this.neighbor is null");
+		if (this == null) {
+			throw new IllegalStateException("this is null");
 		}
-		if ((this.computeEuclidean(this.neighbor) - g.computeEuclidean(this.neighbor) > 0)) {
+		if ((this.computeEuclidean(this.testFlower) - g.computeEuclidean(this.testFlower)) > 0) {
 			return -1;
 		} else {
 			return 1;
