@@ -123,4 +123,24 @@ public class FlowerTest {
 		}
 	}
 	
+	@Test
+	public void testPredict() {
+		int toggleNumberOfNeighbors = 40;
+		Flower flowerOfInterest = outputArr[0];
+		Flower[] neighbors = new Flower[toggleNumberOfNeighbors];
+		for (int i = 1; i < toggleNumberOfNeighbors + 1; i++) {
+			neighbors[i-1] = outputArr[i];
+		}
+		for (int i = 0; i < toggleNumberOfNeighbors; i++) {
+			System.out.println(flowerOfInterest.computeEuclidean(neighbors[i]) + " " + neighbors[i].getSpeciesName());
+		}
+		System.out.println("____");
+		Flower[] kClosest = flowerOfInterest.kNN(neighbors, 10);
+		for (int i = 0; i < 2; i++) {
+			System.out.println(kClosest[i].getFeatures()[0] + " " + kClosest[i].getSpeciesName());
+		}
+		Flower[] arrOfToPredict = FlowerParser.parse("irisTestSet.data");
+		System.out.println(arrOfToPredict[0].predict(kClosest));
+	}
+	
 }
