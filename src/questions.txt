@@ -1,0 +1,36 @@
+1. Analyze the asymptotic running time of your implementation of k-nearest neighbors.
+	Main cost components
+		KNN
+		-takes O(N) time to get all normalized data
+		-each insert to the binary max heap takes O(logn) time, and we do this n times. so
+		 the total process of inserting the data into the binary heap takes O(nlogn) time.
+		-removeMax takes O(1) time, and we do this k times. So it runs in O(k) time
+		PREDICT
+		-O(N) time
+		-the leading cost component is the insertion of the data into the heap, so
+		 overall, kNN runs in \Theta(nlogn) time.
+
+2. In terms of running time, why was it a good idea to use a binary max-heap? (Hint: compare your
+implementation to a hypothetical implementation that used a normal array instead of a max-heap.)
+	For insert, the runtime is O(logn) for each element we insert whereas insert is O(1) for arrays.
+	However, the main advantage for the binary heap is in the removeMax call. The binary max-heap 
+	allows us to easily access the max element at any time in O(1) constant time. If we had 
+	just used a normal array, each call to the array to find the max element would have run in 
+	O(N) time, because we would have iterate throughout the entire array to find the next max element. 
+
+3. Under what scenario would it be a poor idea to use the k-nearest neighbors algorithm?
+	K-nearest would not work in situations in which the characteristis of objects are not
+	quantititative and feature based. Furthermore, it would be a poor idea to use the k-nearest 
+	algorithm in situations in which there are a multitude of confounding variables that
+	affect the features. For instance, if our random sampling of training data was from
+	around the world, it's possible that the affect of geographic location has more of
+	an impact on the provided flowers' features than the flowers' species. In other words,
+	kNN works best when there is a strong correlation between species and the expected
+	levels of the characteristics.
+
+4. Would k = n be a good or bad choice of k? Why?
+	K=n would be a bad choice for k. This is because the main purpose of the kNN function is
+	to find a subset of neighbors from n that are closely related to the test Object.
+	By selecting k=n, we might as well skip the call to kNN and go right to predict, because
+	we would essentially just be saying "which flower species has the highest frequency"
+	rather than "which flower species' characteristics are cloeset to the test object."

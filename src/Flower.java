@@ -81,16 +81,12 @@ public class Flower implements Comparable<Flower> {
 	void updateThisTest(Flower flower) {
 		this.testFlower = flower;		
 	}
-	
-	void updateThisSpecies(String newName) {
-		this.speciesName = newName;
-	}
-	
+		
 	Flower getThisTest(Flower flower) {
 		return testFlower;
 	}
 
-	private Flower[] getNormalizedFlowers(Flower[] training) {
+	public Flower[] getNormalizedFlowers(Flower[] training) {
 		double feature0Min = Double.POSITIVE_INFINITY;
 		double feature0Max = Double.NEGATIVE_INFINITY;
 		double feature1Min = Double.POSITIVE_INFINITY;
@@ -178,11 +174,11 @@ public class Flower implements Comparable<Flower> {
 	/**
 	 * @return a length-four array of features f0, f1, f2, and f3.
 	 */
-	public double[] getFeatures() {
+	double[] getFeatures() {
 		return thisFeatures;
 	}
 	
-	public String getSpeciesName() {
+	String getSpeciesName() {
 		return speciesName;
 	}
 
